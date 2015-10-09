@@ -4,9 +4,9 @@ machine:
 
 dependencies:
   override:
-    - build.sh
+    - ./build.sh
 
 test:
   override:
-    - run.sh
+    - ./run.sh
 
