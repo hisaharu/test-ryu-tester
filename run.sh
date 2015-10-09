@@ -1,5 +1,5 @@
 #!/bin/bash
 set -x
-sudo modprobe openvswitch
+#sudo modprobe openvswitch
 docker info
-docker run -it --privileged test-ryu-tester /test.sh
+docker run -it --rm --privileged --name test-ryu-tester test-ryu-tester /test.sh

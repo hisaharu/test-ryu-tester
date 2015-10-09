@@ -5,7 +5,11 @@ set -x
 TEST_PATH=${TEST_PATH:-of13/match/00_IN_PORT.json}
 
 apt-get install -y openvswitch-switch
-service openvswitch-switch start
+#service openvswitch-switch start
+ovsdb-tool create /etc/openvswitch/conf.db
+mkdir -p /var/run/openvswitch
+ovsdb-server --detach --remote=punix:/var/run/openvswitch/db.sock
+ovs-vswitchd --detach
 
 for i in 21 22 23; do
 	ip link add name target-$i type veth peer name tester-$i
@@ -14,6 +18,7 @@ for i in 21 22 23; do
 done
 for SW in target tester; do
 	ovs-vsctl add-br br-$SW
+	ovs-vsctl set bridge br-$SW datapath_type=netdev
 	for i in 21 22 23; do
 		ovs-vsctl add-port br-$SW $SW-$i
 	done
